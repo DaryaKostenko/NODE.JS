@@ -14,13 +14,3 @@ readStream
     .pipe(writeStream)
     .on('error', (error) => console.error(`Writing to txt error\n${error.message}`))
     .on('finish', () => console.log('Converting has been compleated. Take a look at your new file.'));
-
-// line by line
-// csv()
-// .fromStream(readStream)
-// .subscribe((json) => {
-// 	writeStream.write(`${JSON.stringify(json)}\n`);
-// });
-
-// readStream.on('error', (error) => console.error(`Reading csv error\n${error.message}`));
-// writeStream.on('error', (error) => console.error(`Writing to txt error\n${error.message}`))
