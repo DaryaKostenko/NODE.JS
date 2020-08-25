@@ -65,7 +65,7 @@ export class UserService {
 
     getAutoSuggestUsers(login: string, limit: number): Promise<Array<User>> {
         return Promise.resolve(
-            this.users.filter((user: User) => user.login.includes(login))
+            this.users.filter((user: User) => user.login.includes(login) && !user.isDeleted)
                 .sort((a: User, b: User) => a.login > b.login ? 1 : -1)
                 .slice(0, limit)
         );
