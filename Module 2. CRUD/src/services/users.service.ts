@@ -36,28 +36,30 @@ export class UserService {
 
     createUser(user: User): Promise<User | string> {
         if(this.users.some(x => x.login === user.login)) {
-           return Promise.reject(`User with ${user.login} login already exists`);
+           throw new Error(`User with ${user.login} login already exists`);
         }
         this.users.push({...user, id: uuidv4()});
         return Promise.resolve(user);
     }
 
     updateUser(user: User): Promise<User | string> {
-        if(this.users.some(x => x.login === user.login)) {
-            return Promise.reject(`User with ${user.login} login already exists`);
+        const userLoginExists = this.users.filter(x => x.id !== user.id).some(x => x.login === user.login);
+        if(userLoginExists) {
+            throw new Error(`User with ${user.login} login already exists`);
         }
         const index = this.users.findIndex(x => x.id === user.id);
-        this.users[index] = user;
+        this.users[index] = {...this.users[index], ...user};
         return Promise.resolve(user);
     }
 
-    deleteUser(id: string): Promise<User | string> {
-        const user = this.users.find(x => x.id === id);
+    async deleteUser(id: string): Promise<User | string> {
+        const user = await this.getUserById(id);
         if(user && !user.isDeleted) {
             user.isDeleted = true;
             return Promise.resolve(user);
-        } else {
-            return Promise.reject('User does not exists');
+        }
+        else {
+            throw new Error('User does not exists');
         }
     }
 
