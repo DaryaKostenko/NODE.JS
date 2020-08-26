@@ -26,48 +26,51 @@ export class UserService {
         },
     ];
 
-    getUsers(): Promise<Array<User>> {
-        return Promise.resolve(this.users.filter(user => !user.isDeleted));
+    async getUsers(limit: number): Promise<Array<User>> {
+        return this.getSortedUsers(this.users, limit);
     }
 
-    getUserById(id: string): Promise<User | undefined> {
-       return Promise.resolve(this.users.find(user => user.id === id));
+    async getUserById(id: string): Promise<User | undefined> {
+       return this.users.find(user => user.id === id);
     }
 
-    createUser(user: User): Promise<User | string> {
+    async createUser(user: User): Promise<User | string> {
         if(this.users.some(x => x.login === user.login)) {
            throw new Error(`User with ${user.login} login already exists`);
         }
         this.users.push({...user, id: uuidv4()});
-        return Promise.resolve(user);
+        return user;
     }
 
-    updateUser(user: User): Promise<User | string> {
+    async updateUser(user: User): Promise<User | string> {
         const userLoginExists = this.users.filter(x => x.id !== user.id).some(x => x.login === user.login);
         if(userLoginExists) {
             throw new Error(`User with ${user.login} login already exists`);
         }
         const index = this.users.findIndex(x => x.id === user.id);
         this.users[index] = {...this.users[index], ...user};
-        return Promise.resolve(user);
+        return user;
     }
 
     async deleteUser(id: string): Promise<User | string> {
         const user = await this.getUserById(id);
         if(user && !user.isDeleted) {
             user.isDeleted = true;
-            return Promise.resolve(user);
+            return user;
         }
         else {
             throw new Error('User does not exists');
         }
     }
 
-    getAutoSuggestUsers(login: string, limit: number): Promise<Array<User>> {
-        return Promise.resolve(
-            this.users.filter((user: User) => user.login.includes(login) && !user.isDeleted)
-                .sort((a: User, b: User) => a.login > b.login ? 1 : -1)
-                .slice(0, limit)
-        );
+    async getAutoSuggestUsers(login: string, limit: number): Promise<Array<User>> {
+        const filteredUsers = this.users.filter((user: User) => user.login.includes(login));
+        return this.getSortedUsers(filteredUsers, limit);
+    }
+
+    private getSortedUsers(users: Array<User>, limit: number): Array<User> {
+        return users.filter((user: User) => !user.isDeleted)
+                    .sort((a: User, b: User) => a.login > b.login ? 1 : -1)
+                    .slice(0, limit);
     }
 }

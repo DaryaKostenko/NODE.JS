@@ -1,6 +1,5 @@
 import { userRequestSchema } from './../models/schemas';
 import express, { Request, Response, Router } from 'express';
-import asyncHandler from 'express-async-handler';
 import { createValidator, ValidatedRequest } from 'express-joi-validation';
 
 import { autoSuggestSchema, userSchema, autoSuggestRequestSchema } from '../models/schemas';
@@ -14,42 +13,51 @@ const userService = new UserService;
 const defaultUserLimit = 2;
 
 router.get('/', validator.query(autoSuggestSchema),
-    asyncHandler(async (req: ValidatedRequest<autoSuggestRequestSchema>, res: Response) => {
-        const { loginSubstring, limit } = req.query;
-        if (loginSubstring) {
-            userService.getAutoSuggestUsers(loginSubstring, limit || defaultUserLimit).then(user => res.json(user));
-        } else {
-            userService.getUsers().then(users => res.json(users));
-        }
-    })
+    async (req: ValidatedRequest<autoSuggestRequestSchema>, res: Response) => {
+        const { loginSubstring, limit = defaultUserLimit } = req.query;
+        const users = loginSubstring 
+            ? await userService.getAutoSuggestUsers(loginSubstring, limit) 
+            : await userService.getUsers(limit);
+        res.json(users);
+    }
 );
 
-router.get('/:id', asyncHandler(async (req: Request, res: Response) => {
-    userService.getUserById(req.params.id).then(user => res.json(user));
-}));
+router.get('/:id', async (req: Request, res: Response) => {
+    const user = await userService.getUserById(req.params.id);
+    res.json(user);
+});
 
 router.post('/',
     validator.body(userSchema),
-    asyncHandler(async (req: Request, res:Response) => {
-        const user: User = req.body;
-        userService.createUser(user).then(user => res.json(user));
-    })
+    async (req: Request, res:Response) => {
+        const userRequest: User = req.body;
+        const user = await userService.createUser(userRequest);
+        res.json(user);
+    }
 );
 
 router.put('/:id',
     validator.body(userSchema),
-    asyncHandler(async (req: ValidatedRequest<userRequestSchema>, res:Response) => {
-        const user: User = req.body;
-        userService.updateUser(user)
-            .catch((err: Error) => res.status(409).json(err.message))
-            .then(user => res.json(user));
-    })
+    async (req: ValidatedRequest<userRequestSchema>, res:Response) => {
+        const userRequest: User = req.body;
+        try{
+            const user = await userService.updateUser(userRequest);
+            res.json(user);
+        }
+        catch(err) {
+            res.status(409).json(err.message);
+        }
+    }
 );
 
-router.delete('/:id', asyncHandler(async (req: ValidatedRequest<userRequestSchema>, res:Response) => {
-    userService.deleteUser(req.params.id)
-        .catch((err: Error) => res.status(404).json(err.message))
-        .then(user => res.json(user));
-}));
+router.delete('/:id', async (req: ValidatedRequest<userRequestSchema>, res:Response) => {
+    try {
+        const user = await userService.deleteUser(req.params.id);
+        res.json(user);
+    }
+    catch(err) {
+        res.status(404).json(err.message);
+    }
+});
 
 export default router;
