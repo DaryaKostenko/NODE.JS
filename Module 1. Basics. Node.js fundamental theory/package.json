@@ -1,0 +1,31 @@
+{
+  "name": "node.js",
+  "version": "1.0.0",
+  "description": "node.js",
+  "main": "task1.js",
+  "scripts": {
+    "task1": "nodemon scripts/task1.js",
+    "task2": "nodemon scripts/task2.js",
+    "task3.1": "nodemon --exec babel-node scripts/task1_es6.js",
+    "task3.2": "nodemon --exec babel-node scripts/task2_es6.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DaryaKostenko/NODE.JS.git"
+  },
+  "author": "dariaK",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DaryaKostenko/NODE.JS/issues"
+  },
+  "homepage": "https://github.com/DaryaKostenko/NODE.JS#readme",
+  "dependencies": {
+    "@babel/node": "^7.10.5",
+    "csvtojson": "^2.0.10"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.11.1",
+    "@babel/preset-env": "^7.11.0"
+  }
+}
