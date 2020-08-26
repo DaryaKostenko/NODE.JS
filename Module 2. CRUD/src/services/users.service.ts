@@ -31,10 +31,10 @@ export class UserService {
     }
 
     async getUserById(id: string): Promise<User | undefined> {
-       return this.users.find(user => user.id === id);
+       return this.users.find(user => user.id === id && !user.isDeleted);
     }
 
-    async createUser(user: User): Promise<User | string> {
+    async createUser(user: User): Promise<User> {
         if(this.users.some(x => x.login === user.login)) {
            throw new Error(`User with ${user.login} login already exists`);
         }
@@ -42,17 +42,16 @@ export class UserService {
         return user;
     }
 
-    async updateUser(user: User): Promise<User | string> {
+    async updateUser(user: User): Promise<User | undefined> {
         const userLoginExists = this.users.filter(x => x.id !== user.id).some(x => x.login === user.login);
         if(userLoginExists) {
             throw new Error(`User with ${user.login} login already exists`);
         }
-        const index = this.users.findIndex(x => x.id === user.id);
-        this.users[index] = {...this.users[index], ...user};
-        return user;
+        const oldUser = await this.getUserById(user.id);
+        return Object.assign(oldUser, user);
     }
 
-    async deleteUser(id: string): Promise<User | string> {
+    async deleteUser(id: string): Promise<User> {
         const user = await this.getUserById(id);
         if(user && !user.isDeleted) {
             user.isDeleted = true;
