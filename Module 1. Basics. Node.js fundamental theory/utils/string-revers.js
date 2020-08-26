@@ -1,0 +1,1 @@
+exports.reversString = str => str.split('').reverse().join('');
