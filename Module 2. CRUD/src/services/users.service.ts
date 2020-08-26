@@ -53,7 +53,7 @@ export class UserService {
 
     async deleteUser(id: string): Promise<User> {
         const user = await this.getUserById(id);
-        if(user && !user.isDeleted) {
+        if(user) {
             user.isDeleted = true;
             return user;
         }
