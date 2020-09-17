@@ -13,13 +13,13 @@ app.use(express.json());
 
 app.use('/api/users', router);
 
-// app.use((err: any, req: Request, res: Response) => {
-//   if(err && err.error && err.error.isJoi) {
-//     res.status(400).json({
-//       type: err.type,
-//       message: err.error.toString()
-//     });
-//   }
-//   res.status(500).send(err);
-// });
+app.use((err: any, req: Request, res: Response) => {
+  if(err && err.error && err.error.isJoi) {
+    res.status(400).json({
+      type: err.type,
+      message: err.error.toString()
+    });
+  }
+  res.status(500).send(err);
+});
 
