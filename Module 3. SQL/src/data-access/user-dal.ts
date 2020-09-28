@@ -1,7 +1,7 @@
 import { DataMapper } from "./data-mapper";
-import { User } from "../models/user.interface";
-import { UserModel } from "../models/user.model";
-import { SearchOptions } from "../models/search-options.interface";
+import { User } from "../models/user/user.interface";
+import { UserModel } from "../models/user/user.model";
+import { SearchOptions } from "../models/user/search-options.interface";
 import { Op } from "sequelize";
 
 export class UserDal {

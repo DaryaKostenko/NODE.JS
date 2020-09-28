@@ -1,10 +1,10 @@
-import { userRequestSchema, userUpdateSchema } from '../models/schemas';
+import { userRequestSchema, userUpdateSchema } from '../models/user/schemas';
 import express, { Request, Response, Router } from 'express';
 import { createValidator, ValidatedRequest } from 'express-joi-validation';
 import { v4 as uuidv4 } from 'uuid';
 
-import { autoSuggestSchema, userCreateSchema, autoSuggestRequestSchema } from '../models/schemas';
-import { User } from '../models/user.interface';
+import { autoSuggestSchema, userCreateSchema, autoSuggestRequestSchema } from '../models/user/schemas';
+import { User } from '../models/user/user.interface';
 import { UserService } from '../services/users.service';
 
 const router: Router = express.Router();

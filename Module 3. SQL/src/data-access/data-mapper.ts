@@ -1,5 +1,5 @@
-import { UserModel } from "../models/user.model";
-import { User } from "../models/user.interface";
+import { UserModel } from "../models/user/user.model";
+import { User } from "../models/user/user.interface";
 
 export class DataMapper {
     toDomain(user: UserModel): User {
