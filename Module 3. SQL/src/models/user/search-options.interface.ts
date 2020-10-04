@@ -1,4 +1,4 @@
-export interface SearchOptions {
+export interface UserSearchOptions {
     loginSubstring?: string;
     limit?: number;
 }

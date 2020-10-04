@@ -4,9 +4,9 @@
   "description": "Module 3",
   "main": "index.js",
   "scripts": {
-    "tsc": "tsc -c",
+    "tsc": "tsc",
     "eslint": "npx eslint src",
-    "init database": "node src/config/init-database.js",
+    "init_database": "node src/config/init-database.js",
     "task1": "nodemon src/app.ts"
   },
   "author": "dariaK",
