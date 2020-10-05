@@ -1,6 +1,6 @@
 import { DataTypes, Sequelize } from "sequelize";
 
-export const sequelize = new Sequelize('users', 'postgres', 'onelife111', {
+export const sequelize = new Sequelize('users', 'postgres', '', {
     host: process.env.DB_HOST || "localhost",
     dialect: 'postgres'
 });
