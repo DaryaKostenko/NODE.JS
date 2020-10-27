@@ -1,46 +1,51 @@
-import { UserDataMapper } from "./user-data-mapper";
-import { User } from "../models/user/user.interface";
-import { UserModel } from "../models/user/user.model";
-import { UserSearchOptions } from "../models/user/search-options.interface";
-import { Op } from "sequelize";
+import { inject, injectable } from 'inversify';
+import { Op } from 'sequelize';
 
-export class UserDal {
-  dataMapper: UserDataMapper = new UserDataMapper();
+import { TYPES } from '../config/inversify.types';
+import { UserSearchOptions } from '../models/user/search-options.interface';
+import { User } from '../models/user/user.interface';
+import { UserModel } from '../models/user/user.model';
+import IUserDal from './user-dal.interface';
+import { IUserMapper } from './user-data-mapper.interface';
 
-  async getUser(id: string): Promise<User | null> {
-    const user = await UserModel.findOne({ where: { id } });
-    return user ? this.dataMapper.toDomain(user) : null;
-  }
+@injectable()
+export class UserDal implements IUserDal {
+    constructor(@inject(TYPES.UserMapper) private dataMapper: IUserMapper) { }
 
-  async getUsers(options: UserSearchOptions): Promise<Array<User>> {
-    const users = await UserModel.findAll({
-      where: {
-        login: {
-          [Op.like]: `%${options.loginSubstring || ""}%`,
-        },
-      },
-      limit: options.limit || 10,
-      order: [["login", "ASC"]],
-    });
-    return users.map((user) => this.dataMapper.toDomain(user));
-  }
+    async getUser(id: string): Promise<User | null> {
+        const user = await UserModel.findOne({ where: { id } });
+        return user ? this.dataMapper.toDomain(user) : null;
+    }
 
-  async createUser(user: User): Promise<User> {
-    const userDal = await UserModel.create(user);
-    return this.dataMapper.toDomain(userDal);
-  }
+    async getUsers(options: UserSearchOptions): Promise<Array<User>> {
+        const users = await UserModel.findAll({
+            where: {
+                login: {
+                    [Op.like]: `%${options.loginSubstring || ""}%`,
+                },
+            },
+            limit: options.limit || 10,
+            order: [["login", "ASC"]],
+        });
+        return users.map((user) => this.dataMapper.toDomain(user));
+    }
 
-  async updateUser(user: User): Promise<User> {
-    const id = user.id;
-    await UserModel.update(user, { where: { id } });
-    return user;
-  }
+    async createUser(user: User): Promise<User> {
+        const userDal = await UserModel.create(user);
+        return this.dataMapper.toDomain(userDal);
+    }
 
-  async deleteUser(id: string): Promise<User> {
-    const userDal = await UserModel.update(
-      { isdeleted: true },
-      { where: { id } }
-    );
-    return this.dataMapper.toDomain(userDal[1][0]);
-  }
+    async updateUser(user: User): Promise<User> {
+        const id = user.id;
+        await UserModel.update(user, { where: { id } });
+        return user;
+    }
+
+    async deleteUser(id: string): Promise<User> {
+        const userDal = await UserModel.update(
+            { isdeleted: true },
+            { where: { id } }
+        );
+        return this.dataMapper.toDomain(userDal[1][0]);
+    }
 }

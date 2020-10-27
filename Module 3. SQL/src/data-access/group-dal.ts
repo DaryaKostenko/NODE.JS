@@ -1,3 +1,4 @@
+import { IGroupDal } from './group-dal.interface';
 import { GroupSearchOptions } from './../models/group/group-search-options.interface';
 import { GroupDataMapper } from './group-data-mapper';
 import { Op, Transaction } from 'sequelize';
@@ -5,10 +6,14 @@ import { Group } from '../models/group/group.interface';
 import { GroupModel } from '../models/group/group.model';
 import { sequelize } from '../config/database';
 import { UserGroupModel } from '../models/userGroup/userGroup.model';
+import { inject, injectable } from 'inversify';
+import { TYPES } from '../config/inversify.types';
 
-
-export class GroupDal {
-    dataMapper: GroupDataMapper = new GroupDataMapper();
+@injectable()
+export class GroupDal implements IGroupDal {
+    constructor(
+        @inject(TYPES.GroupMapper) private dataMapper: GroupDataMapper
+    ) {}
 
     async getGroup(id: string): Promise<Group | null> {
         const group = await GroupModel.findOne({ where: { id } });

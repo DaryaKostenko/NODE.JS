@@ -1,33 +1,40 @@
-import express, { Router } from 'express';
+import { Router } from 'express';
 import { createValidator } from 'express-joi-validation';
+import { inject, injectable } from 'inversify';
 
+import { TYPES } from '../config/inversify.types';
+import IUserController from '../controllers/user-controller.interface';
 import { autoSuggestSchema, userCreateSchema, userUpdateSchema } from '../models/user/schemas';
-import { UserController } from '../controllers/user-controller';
+import { IRouter } from './router.interface';
 
-const router: Router = express.Router();
-const validator = createValidator();
-const userController = new UserController();
+@injectable()
+class UserRouter implements IRouter {
+    private validator = createValidator();
 
-router.get('/', validator.query(autoSuggestSchema),
-    userController.getUsers
-);
+    constructor(
+        @inject(TYPES.UserController) private userController: IUserController
+    ) {}
 
-router.get('/:id',
-    userController.getUser
-);
+    init(): Router {
+        return Router()
+        .get('/', this.validator.query(autoSuggestSchema),
+            this.userController.getUsers
+        )
+        .get('/:id',
+            this.userController.getUser
+        )
+        .post('/',
+            this.validator.body(userCreateSchema),
+            this.userController.createUser
+        )
+        .put('/:id',
+            this.validator.body(userUpdateSchema),
+            this.userController.updateUser
+        )
+        .delete('/:id',
+            this.userController.getUsers
+        );
+    }
+}
 
-router.post('/',
-    validator.body(userCreateSchema),
-    userController.createUser
-);
-
-router.put('/:id',
-    validator.body(userUpdateSchema),
-    userController.updateUser
-);
-
-router.delete('/:id',
-    userController.getUsers
-);
-
-export default router;
+export default UserRouter;

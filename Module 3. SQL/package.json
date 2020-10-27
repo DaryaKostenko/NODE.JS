@@ -4,7 +4,7 @@
   "description": "Module 3",
   "main": "index.js",
   "scripts": {
-    "tsc": "tsc",
+    "tsc": "tsc -p .",
     "eslint": "npx eslint src",
     "init_database": "node src/config/init-database.js",
     "task1": "nodemon src/app.ts"
@@ -35,9 +35,11 @@
     "express": "4.17.1",
     "express-async-handler": "^1.1.4",
     "express-joi-validation": "^4.0.4-beta.0",
+    "inversify": "^5.0.1",
     "joi-extract-type": "^15.0.8",
     "pg": "^8.3.2",
     "pg-hstore": "^2.3.3",
+    "reflect-metadata": "^0.1.13",
     "sequelize": "^6.3.4",
     "sequelize-typescript": "^1.1.0",
     "uuid": "^8.3.0"

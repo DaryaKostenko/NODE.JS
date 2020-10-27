@@ -1,6 +1,6 @@
-import { Model, DataTypes } from "sequelize";
-import { sequelize } from "../../config/database";
-import { User } from "./user.interface";
+import { Model } from 'sequelize';
+
+import { User } from './user.interface';
 
 export class UserModel extends Model implements User {
     id!: string;
@@ -9,5 +9,3 @@ export class UserModel extends Model implements User {
     age!: number;
     isdeleted!: boolean;
 }
-
-//UserModel.sync();
