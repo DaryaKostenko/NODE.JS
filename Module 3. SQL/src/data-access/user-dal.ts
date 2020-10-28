@@ -2,14 +2,17 @@ import { inject, injectable } from 'inversify';
 import { Op } from 'sequelize';
 
 import { TYPES } from '../config/inversify.types';
+import { LogClass } from '../decorators/logger.decorator';
 import { UserSearchOptions } from '../models/user/search-options.interface';
 import { User } from '../models/user/user.interface';
 import { UserModel } from '../models/user/user.model';
-import IUserDal from './user-dal.interface';
 import { IUserMapper } from './mappers/user-data-mapper.interface';
+import IUserDal from './user-dal.interface';
 
+@LogClass
 @injectable()
 export class UserDal implements IUserDal {
+
     constructor(@inject(TYPES.UserMapper) private dataMapper: IUserMapper) { }
 
     async getUser(id: string): Promise<User | null> {
@@ -49,3 +52,5 @@ export class UserDal implements IUserDal {
         return this.dataMapper.toDomain(userDal[1][0]);
     }
 }
+
+export default UserDal;

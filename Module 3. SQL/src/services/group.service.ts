@@ -1,11 +1,13 @@
 import { inject, injectable } from 'inversify';
 
 import { TYPES } from '../config/inversify.types';
+import { LogClass } from '../decorators/logger.decorator';
 import { GroupSearchOptions } from '../models/group/group-search-options.interface';
 import { Group } from '../models/group/group.interface';
 import { GroupDal } from './../data-access/group-dal';
 import { IGroupService } from './group-service.interface';
 
+@LogClass
 @injectable()
 export class GroupService implements IGroupService {
 
@@ -38,3 +40,5 @@ export class GroupService implements IGroupService {
         await this.groupDal.addUsersToGroup(groupId, userIds);
     }
 }
+
+export default GroupService;

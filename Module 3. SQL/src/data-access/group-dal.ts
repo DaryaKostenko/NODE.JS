@@ -1,16 +1,20 @@
-import { IGroupDal } from './group-dal.interface';
-import { GroupSearchOptions } from './../models/group/group-search-options.interface';
-import { GroupDataMapper } from './mappers/group-data-mapper';
+import { inject, injectable } from 'inversify';
 import { Op, Transaction } from 'sequelize';
+
+import { sequelize } from '../config/database';
+import { TYPES } from '../config/inversify.types';
+import { LogClass } from '../decorators/logger.decorator';
 import { Group } from '../models/group/group.interface';
 import { GroupModel } from '../models/group/group.model';
-import { sequelize } from '../config/database';
 import { UserGroupModel } from '../models/userGroup/userGroup.model';
-import { inject, injectable } from 'inversify';
-import { TYPES } from '../config/inversify.types';
+import { GroupSearchOptions } from './../models/group/group-search-options.interface';
+import { IGroupDal } from './group-dal.interface';
+import { GroupDataMapper } from './mappers/group-data-mapper';
 
+@LogClass
 @injectable()
 export class GroupDal implements IGroupDal {
+
     constructor(
         @inject(TYPES.GroupMapper) private dataMapper: GroupDataMapper
     ) {}
@@ -67,3 +71,5 @@ export class GroupDal implements IGroupDal {
         });
     }
 }
+
+export default GroupDal;
