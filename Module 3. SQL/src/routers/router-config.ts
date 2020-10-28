@@ -1,8 +1,9 @@
-import { IRouterConfig } from './router-config.interface';
-import { TYPES } from './../config/inversify.types';
-import { inject, injectable } from "inversify";
-import { IRouter } from './router.interface';
 import { Application } from 'express';
+import { inject, injectable } from 'inversify';
+
+import { TYPES } from './../config/inversify.types';
+import { IRouterConfig } from './router-config.interface';
+import { IRouter } from './router.interface';
 
 @injectable()
 export class RouterConfig implements IRouterConfig {

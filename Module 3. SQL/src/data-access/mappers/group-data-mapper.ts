@@ -10,3 +10,5 @@ export class GroupDataMapper implements IGroupMapper{
         return { id, name, permissions };
     }
 }
+
+export default GroupDataMapper;

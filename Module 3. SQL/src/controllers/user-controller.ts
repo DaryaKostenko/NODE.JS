@@ -13,6 +13,7 @@ const defaultUserLimit = 2;
 
 @injectable()
 export class UserController implements IUserController {
+
     constructor(
         @inject(TYPES.UserService) private userService: IUserService
     ) {}
@@ -55,3 +56,5 @@ export class UserController implements IUserController {
         }
     }
 }
+
+export default UserController;

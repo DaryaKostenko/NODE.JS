@@ -49,3 +49,5 @@ export class GroupController implements IGroupController {
         .then(() => res.sendStatus(200));
     }
 }
+
+export default GroupController;

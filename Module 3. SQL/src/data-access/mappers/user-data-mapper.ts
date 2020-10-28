@@ -11,3 +11,5 @@ export class UserDataMapper implements IUserMapper{
         return { id, login, password, age, isdeleted: isdeleted };
     }
 }
+
+export default UserDataMapper;
