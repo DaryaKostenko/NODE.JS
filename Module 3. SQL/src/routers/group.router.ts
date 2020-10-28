@@ -1,45 +1,50 @@
-import { GroupController } from './../controllers/group-controller';
-import express, { Router } from 'express';
-import {
-    // Creates a validator that generates middlewares
-    createValidator
-  } from 'express-joi-validation';
-
 import 'joi-extract-type';
+
+import { Router } from 'express';
+import { createValidator } from 'express-joi-validation';
+import { inject, injectable } from 'inversify';
+
 import { addUsersRequestSchema, groupSchema, groupsFilterRequestSchema } from '../models/group/schemas';
+import { TYPES } from './../config/inversify.types';
+import { IGroupController } from '../controllers/group-controller.interface';
+import { IRouter } from './router.interface';
 
-const router: Router = express.Router();
-const validator = createValidator();
-const groupController = new GroupController();
 
-router.get('/',
-    validator.query(groupsFilterRequestSchema),
-    groupController.getGroups
-);
+@injectable()
+export class GroupRouter implements IRouter {
+    private validator = createValidator();
 
-router.get('/:id',
-    groupController.getGroup
-);
+    constructor(
+        @inject(TYPES.GroupController) private groupController: IGroupController
+    ) {}
 
-router.post('/',
-    validator.body(groupSchema),
-    groupController.createGroup
-);
+    init(): Router {
+        return Router()
+        .get('/',
+            this.validator.query(groupsFilterRequestSchema),
+            this.groupController.getGroups
+        )
+        .get('/:id',
+            this.groupController.getGroup
+        )
+        .post('/',
+            this.validator.body(groupSchema),
+            this.groupController.createGroup
+        )
+        .put('/:id',
+            this.validator.body(groupSchema),
+            this.groupController.updateGroup
+        )
+        .delete('/:id',
+            this.validator.params(groupSchema),
+            this.groupController.deleteGroup
+        )
+        .post('/:id/users',
+            this.validator.params(groupSchema),
+            this.validator.body(addUsersRequestSchema),
+            this.groupController.addUsersToGroup
+        );
+    }
+}
 
-router.put('/:id',
-    validator.body(groupSchema),
-    groupController.updateGroup
-);
-
-router.delete('/:id',
-    validator.params(groupSchema),
-    groupController.deleteGroup
-);
-
-router.post('/:id/users',
-    validator.params(groupSchema),
-    validator.body(addUsersRequestSchema),
-    groupController.addUsersToGroup
-);
-
-export default router;
+export default GroupRouter;

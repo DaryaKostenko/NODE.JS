@@ -1,10 +1,17 @@
-import { GroupDal } from '../data-access/group-dal';
+import { inject, injectable } from 'inversify';
+
+import { TYPES } from '../config/inversify.types';
 import { GroupSearchOptions } from '../models/group/group-search-options.interface';
 import { Group } from '../models/group/group.interface';
+import { GroupDal } from './../data-access/group-dal';
+import { IGroupService } from './group-service.interface';
 
-export class GroupService {
+@injectable()
+export class GroupService implements IGroupService {
 
-    groupDal: GroupDal = new GroupDal();
+    constructor(
+        @inject(TYPES.GroupDal) private groupDal: GroupDal
+    ) {}
 
     async getGroup(id: string): Promise<Group | null> {
         return await this.groupDal.getGroup(id);

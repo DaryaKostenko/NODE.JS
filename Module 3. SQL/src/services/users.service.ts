@@ -1,10 +1,16 @@
-import { UserDal } from './../data-access/user-dal';
-import { User } from "../models/user/user.interface";
+import { inject, injectable } from 'inversify';
+
+import { TYPES } from '../config/inversify.types';
+import IUserDal from '../data-access/user-dal.interface';
 import { UserSearchOptions } from '../models/user/search-options.interface';
+import { User } from '../models/user/user.interface';
+import IUserService from './user-service.interface';
 
-export class UserService {
-
-    userDal: UserDal = new UserDal();
+@injectable()
+export class UserService implements IUserService {
+    constructor(
+        @inject(TYPES.UserDal) private userDal: IUserDal
+    ) {}
 
     async getUsers(options: UserSearchOptions): Promise<Array<User>> {
         return await this.userDal.getUsers(options);
