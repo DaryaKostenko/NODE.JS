@@ -27,13 +27,7 @@ function LogMethod(
 ): any {
     const originalMethod = descriptor.value;
     const className = target.name;
-    const isMethod = originalMethod instanceof Function;
     const methodPath = `${className}.${propertyKey}`;
-
-    if (!isMethod) {
-        logService.debug(`${methodPath} ignored`);
-        return;
-    }
 
     descriptor.value = function (...args: any[]) {
         const params = args.map((arg) => JSON.stringify(arg)).join(", ");
