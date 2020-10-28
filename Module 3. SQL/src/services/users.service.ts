@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify';
 
 import { TYPES } from '../config/inversify.types';
 import IUserDal from '../data-access/user-dal.interface';
-import { LogClass } from '../decorators/logger.decorator';
+import { LogClass } from '../helpers/logger.decorator';
 import { UserSearchOptions } from '../models/user/search-options.interface';
 import { User } from '../models/user/user.interface';
 import IUserService from './user-service.interface';

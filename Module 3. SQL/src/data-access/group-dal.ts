@@ -3,7 +3,7 @@ import { Op, Transaction } from 'sequelize';
 
 import { sequelize } from '../config/database';
 import { TYPES } from '../config/inversify.types';
-import { LogClass } from '../decorators/logger.decorator';
+import { LogClass } from '../helpers/logger.decorator';
 import { Group } from '../models/group/group.interface';
 import { GroupModel } from '../models/group/group.model';
 import { UserGroupModel } from '../models/userGroup/userGroup.model';

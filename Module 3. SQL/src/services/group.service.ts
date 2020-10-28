@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
 
 import { TYPES } from '../config/inversify.types';
-import { LogClass } from '../decorators/logger.decorator';
+import { LogClass } from '../helpers/logger.decorator';
 import { GroupSearchOptions } from '../models/group/group-search-options.interface';
 import { Group } from '../models/group/group.interface';
 import { GroupDal } from './../data-access/group-dal';

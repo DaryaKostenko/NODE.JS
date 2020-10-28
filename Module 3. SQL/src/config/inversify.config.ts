@@ -12,6 +12,7 @@ import { UserDataMapper } from '../data-access/mappers/user-data-mapper';
 import { IUserMapper } from '../data-access/mappers/user-data-mapper.interface';
 import { UserDal } from '../data-access/user-dal';
 import IUserDal from '../data-access/user-dal.interface';
+import ErrorHandler from '../helpers/error-handler';
 import RouterConfig from '../routers/router-config';
 import UserRouter from '../routers/user.router';
 import { IGroupService } from '../services/group-service.interface';
@@ -19,6 +20,7 @@ import IUserService from '../services/user-service.interface';
 import { UserService } from '../services/users.service';
 import { GroupController } from './../controllers/group-controller';
 import { IGroupDal } from './../data-access/group-dal.interface';
+import { IErrorHandler } from './../helpers/error-handler.interface';
 import { GroupRouter } from './../routers/group.router';
 import { IRouterConfig } from './../routers/router-config.interface';
 import { IRouter } from './../routers/router.interface';
@@ -45,5 +47,6 @@ container.bind<IRouter>(TYPES.GroupRouter).to(GroupRouter);
 container.bind<IRouterConfig>(TYPES.RouterConfig).to(RouterConfig);
 
 container.bind<ILoggerService>(TYPES.LoggerService).to(LoggerService);
+container.bind<IErrorHandler>(TYPES.ErrorHandler).to(ErrorHandler);
 
 export { container };

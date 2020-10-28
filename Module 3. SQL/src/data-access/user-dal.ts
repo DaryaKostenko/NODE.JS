@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify';
 import { Op } from 'sequelize';
 
 import { TYPES } from '../config/inversify.types';
-import { LogClass } from '../decorators/logger.decorator';
+import { LogClass } from '../helpers/logger.decorator';
 import { UserSearchOptions } from '../models/user/search-options.interface';
 import { User } from '../models/user/user.interface';
 import { UserModel } from '../models/user/user.model';
