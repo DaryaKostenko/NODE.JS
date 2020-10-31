@@ -1,14 +1,23 @@
-import { GroupSearchOptions } from './../models/group/group-search-options.interface';
-import { GroupDataMapper } from './group-data-mapper';
+import { inject, injectable } from 'inversify';
 import { Op, Transaction } from 'sequelize';
+
+import { sequelize } from '../config/database';
+import { TYPES } from '../config/inversify.types';
+import { LogClass } from '../helpers/logger.decorator';
 import { Group } from '../models/group/group.interface';
 import { GroupModel } from '../models/group/group.model';
-import { sequelize } from '../config/database';
 import { UserGroupModel } from '../models/userGroup/userGroup.model';
+import { GroupSearchOptions } from './../models/group/group-search-options.interface';
+import { IGroupDal } from './group-dal.interface';
+import { GroupDataMapper } from './mappers/group-data-mapper';
 
+@LogClass
+@injectable()
+export class GroupDal implements IGroupDal {
 
-export class GroupDal {
-    dataMapper: GroupDataMapper = new GroupDataMapper();
+    constructor(
+        @inject(TYPES.GroupMapper) private dataMapper: GroupDataMapper
+    ) {}
 
     async getGroup(id: string): Promise<Group | null> {
         const group = await GroupModel.findOne({ where: { id } });
@@ -62,3 +71,5 @@ export class GroupDal {
         });
     }
 }
+
+export default GroupDal;
