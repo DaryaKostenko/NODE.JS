@@ -12,6 +12,8 @@ const routerConfig: IRouterConfig = container.get<IRouterConfig>(TYPES.RouterCon
 const errorHandler: IErrorHandler = container.get<IErrorHandler>(TYPES.ErrorHandler);
 
 InitDatabase();
+app.use(express.urlencoded({ extended: false }))
+        .use(express.json());
 routerConfig.initRoutes(app);
 errorHandler.initErrorHandlers(app);
 

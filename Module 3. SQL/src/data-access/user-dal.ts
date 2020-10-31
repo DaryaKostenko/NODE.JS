@@ -33,6 +33,17 @@ export class UserDal implements IUserDal {
         return users.map((user) => this.dataMapper.toDomain(user));
     }
 
+    async getUserId(login: string, password: string): Promise<string | undefined> {
+        const user = await UserModel.findOne({
+            where: {
+                [Op.and]: {
+                    login, password
+                }
+            }
+        });
+        return user?.id;
+    }
+
     async createUser(user: User): Promise<User> {
         const userDal = await UserModel.create(user);
         return this.dataMapper.toDomain(userDal);
