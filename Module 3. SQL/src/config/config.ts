@@ -1,3 +1,5 @@
+export const PORT = '300';
+
 export const SECRET = 'secret';
 export const AUTH_HEADER = 'x-access-token';
 export const AUTH_TOKEN_ID = 'AuthId'
