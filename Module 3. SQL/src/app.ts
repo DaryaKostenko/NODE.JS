@@ -21,6 +21,9 @@ AuthMiddleware(app);
 routerConfig.initRoutes(app);
 errorHandler.initErrorHandlers(app);
 
-app.listen(PORT, function () {
+const server = app.listen(PORT, function () {
     console.log(`App is listening on port ${PORT}!`);
 });
+
+
+export { app, server };
