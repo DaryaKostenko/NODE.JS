@@ -7,7 +7,9 @@ import { TYPES } from './config/inversify.types';
 import { IErrorHandler } from './helpers/error-handler.interface';
 import { AuthMiddleware } from './middlewares/auth-middleware';
 import { IRouterConfig } from './routers/router-config.interface';
+import { config } from 'dotenv-flow';
 
+config();
 const app: Application = express();
 const routerConfig: IRouterConfig = container.get<IRouterConfig>(TYPES.RouterConfig);
 const errorHandler: IErrorHandler = container.get<IErrorHandler>(TYPES.ErrorHandler);

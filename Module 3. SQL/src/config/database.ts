@@ -2,9 +2,10 @@ import { DataTypes, Sequelize } from "sequelize";
 import { GroupModel } from "../models/group/group.model";
 import { UserModel } from "../models/user/user.model";
 import { UserGroupModel } from "../models/userGroup/userGroup.model";
+import { DB_HOST, DB_NAME, DB_PASSWORD, DB_USER_NAME } from "./config";
 
-export const sequelize = new Sequelize("users", "postgres", "onelife111", {
-    host: process.env.DB_HOST || "localhost",
+export const sequelize = new Sequelize(DB_NAME, DB_USER_NAME, DB_PASSWORD, {
+    host: DB_HOST,
     dialect: "postgres",
 });
 
