@@ -18,24 +18,24 @@ export class UserController implements IUserController {
         @inject(TYPES.UserService) private userService: IUserService
     ) {}
 
-    async getUsers(req: ValidatedRequest<autoSuggestRequestSchema>, res: Response): Promise<Response<any>> {
+    getUsers = async (req: ValidatedRequest<autoSuggestRequestSchema>, res: Response): Promise<Response<any>> => {
         const { loginSubstring, limit = defaultUserLimit } = req.query;
         const users = await this.userService.getUsers({ loginSubstring, limit });
         return res.json(users);
     }
 
-    async getUser(req: Request, res: Response): Promise<Response<any>> {
+    getUser = async (req: Request, res: Response): Promise<Response<any>> => {
         const user = await this.userService.getUserById(req.params.id);
         return res.json(user);
     }
 
-    async createUser(req: Request, res: Response): Promise<Response<any>> {
+    createUser = async (req: Request, res: Response): Promise<Response<any>> => {
         const userRequest: User = req.body;
         const user = await this.userService.createUser({...userRequest, id: uuidv4()});
         return res.json(user);
     }
 
-    async updateUser(req: ValidatedRequest<userRequestSchema>, res:Response): Promise<Response<any>> {
+    updateUser = async (req: ValidatedRequest<userRequestSchema>, res:Response): Promise<Response<any>> => {
         const userRequest: User = req.body;
         try{
             const user = await this.userService.updateUser(userRequest);
@@ -46,7 +46,7 @@ export class UserController implements IUserController {
         }
     }
 
-    async deleteUser(req: ValidatedRequest<userRequestSchema>, res:Response): Promise<Response<any>> {
+    deleteUser = async (req: ValidatedRequest<userRequestSchema>, res:Response): Promise<Response<any>> => {
         try {
             const user = await this.userService.deleteUser(req.params.id);
             return res.json(user);
